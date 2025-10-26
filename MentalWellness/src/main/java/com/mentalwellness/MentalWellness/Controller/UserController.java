@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import com.mentalwellness.MentalWellness.Service.UserService;
 import com.mentalwellness.MentalWellness.model.User;
-@RestController
+@Controller
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
@@ -20,7 +20,7 @@ public class UserController {
     @GetMapping
     public String getAllUsers(Model model) {
         model.addAttribute("users", u_service.getAllUsers());
-        return "user/list";
+        return "users/list";
     }
     
     @GetMapping("/new")
