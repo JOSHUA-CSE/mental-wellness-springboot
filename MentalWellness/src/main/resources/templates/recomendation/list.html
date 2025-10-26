@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommendations</title>
+  <link rel="stylesheet" th:href="@{/list.css}">
+</head>
+
+<body>
+  <header>
+    <h1>User Recommendations</h1>
+    <a th:href="@{/api/recomendation/new}" class="add-button">+ Add Recommendation</a>
+  </header>
+
+  <div class="container">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Email</th>
+          <th>Recommendation</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each="rec : ${recomendations}">
+          <td th:text="${rec.rec_id}"></td>
+          <td th:text="${rec.user != null ? rec.user.name : '—'}"></td>
+          <td th:text="${rec.user != null ? rec.user.email : '—'}"></td>
+          <td th:text="${rec.recomendation}"></td>
+          <td th:text="${#dates.format(rec.created_at, 'dd-MM-yyyy HH:mm')}"></td>
+          <td>
+            <a th:href="@{/api/recomendation/edit/{id}(id=${rec.rec_id})}" class="edit-btn">Edit</a>
+            <a th:href="@{/api/recomendation/delete/{id}(id=${rec.rec_id})}" 
+               class="delete-btn" 
+               onclick="return confirm('Are you sure you want to delete this recommendation?');">
+               Delete
+            </a>
+          </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(recomendations)}">
+          <td colspan="6" class="no-data">No recommendations available.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>© 2025 Mental Wellness Portal</footer>
+</body>
+</html>
