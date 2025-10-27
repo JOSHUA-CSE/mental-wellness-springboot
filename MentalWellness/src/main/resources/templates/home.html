@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mental Wellness Check-in Portal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/home.css}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-3" href="#">🧠 Mental Wellness Portal</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h3>👤 Users</h3>
+            <p>View, add, or manage registered users.</p>
+            <a href="/api/users" class="btn btn-custom">Manage Users</a>
+        </div>
+
+        <div class="card">
+            <h3>📋 Check-ins</h3>
+            <p>Record daily moods, stress levels, and sleep hours.</p>
+            <a href="/api/checkin" class="btn btn-custom">View Check-ins</a>
+        </div>
+
+        <div class="card">
+            <h3>💡 Recommendations</h3>
+            <p>See personalized wellness tips or create new recommendations.</p>
+            <a href="/api/recomendation" class="btn btn-custom">View Recommendations</a>
+        </div>
+
+        <div class="card p-3">
+            <h3>📈 Reports</h3>
+            <p>Visualize mood and stress trends over time using charts.</p>
+            <form id="reportForm" class="d-flex flex-column align-items-start gap-2" onsubmit="return false;" style="max-width:340px;">
+                <div class="w-100">
+                    <label for="reportType" class="form-label">Type:</label>
+                    <select id="reportType" class="form-select">
+                        <option value="mood-trends">Mood</option>
+                        <option value="stress-trends">Stress</option>
+                    </select>
+                </div>
+
+                <div class="w-100">
+                    <label for="userId" class="form-label">User ID:</label>
+                    <input id="userId" type="number" min="1" class="form-control" placeholder="e.g. 1">
+                </div>
+
+                <div class="w-100 d-flex justify-content-center mt-2">
+                    <button id="viewReportBtn" class="btn btn-custom">View</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Mental Wellness Check-in System | Developed by <b>Joshua Rubert R</b></p>
+    </footer>
+</body>
+    <script>
+        (function(){
+            const form = document.getElementById('reportForm');
+            const btn = document.getElementById('viewReportBtn');
+            form.addEventListener('submit', function(ev){
+                ev.preventDefault();
+                const type = document.getElementById('reportType').value;
+                const idInput = document.getElementById('userId').value.trim();
+                if(!idInput){
+                    alert('Please enter a user ID');
+                    return;
+                }
+                const id = Number(idInput);
+                if(!Number.isInteger(id) || id <= 0){
+                    alert('Please enter a valid numeric user ID (positive integer)');
+                    return;
+                }
+                // Build URL and navigate
+                const url = '/api/reports/' + type + '/user/' + id;
+                window.location.href = url;
+            });
+            // allow clicking button too
+            btn.addEventListener('click', function(){ form.dispatchEvent(new Event('submit')); });
+        })();
+    </script>
+</html>
